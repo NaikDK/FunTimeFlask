@@ -34,13 +34,7 @@ def sse_test():  # put application's code here
 def signUp():
     data = request.get_json()
 
-    cognito = boto3.client(
-        'cognito-idp',
-        region_name=os.getenv('REGION_NAME'),
-        aws_access_key_id=os.getenv('AWS_ACCESS_KEY_ID'),
-        aws_secret_access_key=os.getenv('AWS_SECRET_ACCESS_KEY'),
-        aws_session_token=os.getenv('AWS_SESSION_TOKEN')
-    )
+    cognito = getClient('cognito-idp')
 
     try:
         response = cognito.sign_up(
@@ -63,7 +57,7 @@ def signUp():
 @app.route('/verifyemail')
 def verifyEmail():
     data = request.get_json()
-    cognito = boto3.client('cognito-idp', region_name='us-east-1')
+    cognito = getClient('cognito-idp')
 
     try:
         response = cognito.confirm_sign_up(
@@ -79,12 +73,7 @@ def verifyEmail():
 def login():
     data = request.get_json()
     print(os.getenv('AWS_ACCESS_KEY_ID'))
-    cognito = boto3.client('cognito-idp',
-                           region_name='us-east-1',
-                           aws_access_key_id=os.getenv('AWS_ACCESS_KEY_ID'),
-                           aws_secret_access_key=os.getenv('AWS_SECRET_ACCESS_KEY'),
-                           aws_session_token=os.getenv('AWS_SESSION_TOKEN')
-                           )
+    cognito = getClient('cognito-idp')
 
     try:
         response = cognito.initiate_auth(
@@ -139,11 +128,7 @@ def startGame():
     data = request.get_json()
 
     sqs = boto3.client('sqs', region_name='us-east-1')
-    db = boto3.client('dynamodb',
-                      region_name='us-east-1',
-                      aws_access_key_id=os.getenv('AWS_ACCESS_KEY_ID'),
-                      aws_secret_access_key=os.getenv('AWS_SECRET_ACCESS_KEY'),
-                      aws_session_token=os.getenv('AWS_SESSION_TOKEN'))
+    db = getClient('dynamodb')
     try:
         table = 'Questions'
         item = {
@@ -217,13 +202,7 @@ def startGame():
 def getQuestion():
     data = request.get_json()
     print(data)
-    sqs = boto3.client(
-        'sqs',
-        region_name=os.getenv('REGION_NAME'),
-        aws_access_key_id=os.getenv('AWS_ACCESS_KEY_ID'),
-        aws_secret_access_key=os.getenv('AWS_SECRET_ACCESS_KEY'),
-        aws_session_token=os.getenv('AWS_SESSION_TOKEN')
-    )
+    sqs = getClient('sqs')
     try:
         printqueUrl = 'https://sqs.us-east-1.amazonaws.com/387022035222/' + data['pin']
         response = sqs.receive_message(
