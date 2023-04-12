@@ -1,6 +1,6 @@
-from gevent import monkey;
-
-monkey.patch_all()
+# from gevent import monkey;
+#
+# monkey.patch_all()
 from flask import Flask, Response, render_template, signals, request, abort, jsonify
 from flask_cors import CORS, cross_origin
 from Broadcaster import Broadcaster
@@ -54,7 +54,7 @@ def signUp():
         abort(400, str(e))
 
 
-@app.route('/verifyemail')
+@app.route('/verifyemail', methods=['POST'])
 def verifyEmail():
     data = request.get_json()
     cognito = getClient('cognito-idp')
