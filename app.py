@@ -321,4 +321,4 @@ def listen():
 
 
 if __name__ == '__main__':
-    app.run(threading=True)
+    app.run(threading=True, host='0.0.0.0')
