@@ -2,6 +2,3 @@ flask
 boto3
 flask_cors
 python-dotenv
-os
-time
-json
